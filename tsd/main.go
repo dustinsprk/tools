@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"time"
+
+	"github.com/dustinsprk/tools/time"
+	// "time"
 )
 
 func main() {
@@ -18,22 +20,12 @@ func main() {
 		errorf("cannot parse %s: %v", args[1], err)
 		return
 	}
-	t := parseMs(n)
+	t := time.ParseMs(n)
 	s := t.Format("2 Jan 2006 15:04:05 MST")
 	fmt.Println(s)
 
 }
 
-func parseMs(ms int64) time.Time {
-	s := ms / 1000
-	rem := ms - (s * 1000)
-	return time.Unix(s, rem)
-}
-
 func errorf(s string, args ...interface{}) (int, error) {
 	return fmt.Fprintf(os.Stderr, s, args...)
-}
-
-func nowUnixMillis() int64 {
-	return time.Now().UnixNano() / 1000000
 }

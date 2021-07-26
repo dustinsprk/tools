@@ -6,7 +6,8 @@ import (
 	"os"
 	"os/exec"
 	"strings"
-	"time"
+
+	"github.com/dustinsprk/tools/time"
 )
 
 func main() {
@@ -17,7 +18,7 @@ func main() {
 	flag.BoolVar(&testRun, "testrun", false, "test run")
 	flag.BoolVar(&testRun, "t", false, "test run (abbrv)")
 	flag.Parse()
-	now := time.Now().Format("Mon Jan 2 15:04:05 MST 2006")
+	now := time.NowGit()
 	args := []string{"commit", "--amend", "--date", now}
 	if !edit {
 		args = append(args, "--no-edit")

@@ -6,7 +6,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"time"
+
+	"github.com/dustinsprk/tools/time"
 )
 
 func main() {
@@ -31,16 +32,12 @@ func main() {
 	if negative {
 		ms = ms * -1
 	}
-	now := nowUnixMillis()
+	now := time.NowUnixMillis()
 	suffix := "\n"
 	if newLine {
 		suffix = ""
 	}
 	fmt.Printf("%d%s", now+ms, suffix)
-}
-
-func nowUnixMillis() int64 {
-	return time.Now().UnixNano() / 1000000
 }
 
 func usage() {
