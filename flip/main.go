@@ -18,7 +18,7 @@ func findSide(flips int) string {
 	rand := genCryptoRng()
 	z := 0
 	for i := 0; i < flips; i++ {
-		if n, _ := rand(1); n == 0 {
+		if n, _ := rand(2); n == 0 {
 			z++
 		}
 	}
