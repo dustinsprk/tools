@@ -14,22 +14,26 @@ func main() {
 }
 
 func findSide(flips int) string {
-	half := flips / 2
-	rand := genCryptoRng()
-	z := 0
+	rand := genCryptoRng(2)
+	c := 0
 	for i := 0; i < flips; i++ {
-		if n, _ := rand(2); n == 0 {
-			z++
+		if n, _ := rand(); n == 0 {
+			c++
 		}
 	}
-	if z > half {
+	half := float32(float32(flips) / 2.0)
+	cf := float32(c)
+	if cf == half {
+		return "draw"
+	}
+	if cf > half {
 		return "heads"
 	}
 	return "tails"
 }
 
-func genCryptoRng() func(int) (int64, error) {
-	return func(n int) (int64, error) {
+func genCryptoRng(n int) func() (int64, error) {
+	return func() (int64, error) {
 		bn, err := cr.Int(cr.Reader, big.NewInt(int64(n)))
 		if err != nil {
 			return -1, err
