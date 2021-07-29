@@ -9,38 +9,62 @@ import (
 	"os"
 )
 
+type Winner string
+
+const (
+	Draw  Winner = "draw"
+	Heads Winner = "heads"
+	Tails Winner = "tails"
+)
+
+type FlipResult struct {
+	Total int
+	Heads int
+	Tails int
+}
+
+func (r FlipResult) Winner() Winner {
+	if r.Heads == r.Tails {
+		return Draw
+	}
+	half := float64(r.Total) / float64(2)
+	fh := float64(r.Heads)
+	if fh > half {
+		return Heads
+	}
+	return Tails
+}
+
 func main() {
 	flips := flag.Int("f", 1000, "number of flips to perform")
+	v := flag.Bool("v", false, "verbose output")
 	flag.Parse()
-	s, err := findSide(*flips)
+	r, err := findSide(*flips)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "unexpected error: %v\n", err)
 		os.Exit(1)
 	}
-	fmt.Println(s)
+	fmt.Println(r.Winner())
+	if *v {
+		fmt.Printf("heads: %d\ntails: %d\n", r.Heads, r.Tails)
+	}
 }
 
-func findSide(flips int) (string, error) {
+func findSide(flips int) (FlipResult, error) {
 	rand := genCryptoRng(2)
-	c := 0
+	result := FlipResult{Total: flips, Heads: 0, Tails: 0}
 	for i := 0; i < flips; i++ {
 		n, err := rand()
 		if err != nil {
-			return "", errors.New(fmt.Sprintf("error generating random number %v", err))
+			return result, errors.New(fmt.Sprintf("error generating random number %v", err))
 		}
 		if n == 0 {
-			c++
+			result.Heads++
+		} else {
+			result.Tails++
 		}
 	}
-	half := float32(float32(flips) / 2.0)
-	cf := float32(c)
-	if cf == half {
-		return "draw", nil
-	}
-	if cf > half {
-		return "heads", nil
-	}
-	return "tails", nil
+	return result, nil
 }
 
 func genCryptoRng(n int64) func() (int64, error) {
