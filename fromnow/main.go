@@ -12,11 +12,11 @@ import (
 
 func main() {
 	var newLine bool
-	var negative bool
+	var past bool
 	flag.BoolVar(&newLine, "suppress-new-line", false, "suppress a final newline")
 	flag.BoolVar(&newLine, "s", false, "(abbrv) suppress a final newline")
-	flag.BoolVar(&negative, "negative", false, "use negative to go into the past")
-	flag.BoolVar(&negative, "n", false, "(abbrv) use negative to go into the past")
+	flag.BoolVar(&past, "past", false, "get time in the past")
+	flag.BoolVar(&past, "p", false, "(abbrv) get time the past")
 	flag.Parse()
 	args := flag.Args()
 	if len(args) != 1 {
@@ -29,7 +29,7 @@ func main() {
 		return
 	}
 	ms := int64(n * 1000)
-	if negative {
+	if past {
 		ms = ms * -1
 	}
 	now := time.NowUnixMillis()

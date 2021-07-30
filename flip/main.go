@@ -24,20 +24,18 @@ type FlipResult struct {
 }
 
 func (r FlipResult) Winner() Winner {
-	if r.Heads == r.Tails {
-		return Draw
-	}
-	half := float64(r.Total) / float64(2)
-	fh := float64(r.Heads)
-	if fh > half {
+	if r.Heads > r.Tails {
 		return Heads
 	}
-	return Tails
+	if r.Heads < r.Tails {
+		return Tails
+	}
+	return Draw
 }
 
 func main() {
 	flips := flag.Int("f", 1000, "number of flips to perform")
-	v := flag.Bool("v", false, "verbose output")
+	verbose := flag.Bool("v", false, "verbose output")
 	flag.Parse()
 	r, err := findSide(*flips)
 	if err != nil {
@@ -45,7 +43,7 @@ func main() {
 		os.Exit(1)
 	}
 	fmt.Println(r.Winner())
-	if *v {
+	if *verbose {
 		fmt.Printf("heads: %d\ntails: %d\n", r.Heads, r.Tails)
 	}
 }
@@ -56,14 +54,13 @@ func findSide(flips int) (FlipResult, error) {
 	for i := 0; i < flips; i++ {
 		n, err := rand()
 		if err != nil {
-			return result, errors.New(fmt.Sprintf("error generating random number %v", err))
+			return FlipResult{}, errors.New(fmt.Sprintf("error generating random number %v", err))
 		}
 		if n == 0 {
 			result.Heads++
-		} else {
-			result.Tails++
 		}
 	}
+	result.Tails = flips - result.Heads
 	return result, nil
 }
 

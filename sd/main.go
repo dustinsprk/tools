@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"math"
 	"time"
 )
 
@@ -13,11 +14,15 @@ func init() {
 	flag.BoolVar(&suppressNL, "s", false, "(abbrv) suppress a final newline")
 	flag.Parse()
 }
+
 func main() {
-	yd := time.Now().UTC().YearDay()
+	now := time.Now().In(time.Local)
+	then := time.Date(2021, time.July, 5, 16, 0, 0, 0, time.Local)
+	r := now.Sub(then).Hours() / float64(24)
+	rem := math.Ceil(r)
 	suff := "\n"
 	if suppressNL {
 		suff = ""
 	}
-	fmt.Printf("%d%s", yd, suff)
+	fmt.Printf("%d%s", int(rem), suff)
 }

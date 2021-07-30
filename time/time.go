@@ -5,7 +5,15 @@ import (
 )
 
 func NowGit() string {
-	return t.Now().Format("Mon Jan 2 15:04:05 MST 2006")
+	return FmtDateTime(t.Now())
+}
+
+func FmtDateTime(tt t.Time) string {
+	return tt.Format("Mon Jan 2 15:04:05 MST 2006")
+}
+
+func FmtTime(tt t.Time) string {
+	return tt.Format("15:04:05 MST")
 }
 
 func NowUnixMillis() int64 {
