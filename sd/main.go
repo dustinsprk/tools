@@ -29,13 +29,13 @@ func main() {
 	}
 
 	now := time.Now().In(time.Local)
-	then := time.Date(2022, time.January, 1, 0, 0, 0, 0, time.Local)
-	divisor := float64(24)
+	then := time.Date(2023, time.November, 27, 0, 0, 0, 0, time.Local)
+	divisor := float64(24) // 24 hours
 	if hours {
-		divisor = float64(1)
+		divisor = float64(1) // 1 hour
 	}
 	if weeks {
-		divisor = float64(168)
+		divisor = float64(168) // 24 * 7 hours
 	}
 	r := now.Sub(then).Hours() / divisor
 	rem := math.Round(r)
