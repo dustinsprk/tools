@@ -34,7 +34,7 @@ func (r FlipResult) Winner() Winner {
 }
 
 func main() {
-	flips := flag.Int("f", 1000, "number of flips to perform")
+	flips := flag.Int("f", 1_000, "number of flips to perform")
 	verbose := flag.Bool("v", false, "verbose output")
 	flag.Parse()
 	r, err := findSide(*flips)
